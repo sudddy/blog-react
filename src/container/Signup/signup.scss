@@ -1,0 +1,13 @@
+.whole-container {
+  position: relative;
+  .img-background {
+    height: 100vh;
+    object-fit: cover;
+    width: 100%;
+    z-index: 1;
+  }
+  .signup-container {
+    width: 480px;
+    padding-top: 100px;
+  }
+}

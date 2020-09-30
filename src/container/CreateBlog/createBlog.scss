@@ -1,0 +1,24 @@
+.whole-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  .container {
+    background: #ffffff;
+    height: 400px;
+    width: 400px;
+    margin-top: 150px;
+    .heading {
+      padding: 20px 0px;
+    }
+    .textarea {
+      width: 300px;
+      height: auto;
+    }
+    .button {
+      padding-top: 35px;
+    }
+  }
+  .modal-button {
+    background-image: linear-gradient(to top, #973ab7, #673ab7) !important;
+  }
+}

@@ -1,0 +1,13 @@
+.whole-container {
+  position: relative;
+  .img-background {
+    height: 100vh;
+    object-fit: cover;
+    width: 100%;
+    z-index: 1;
+  }
+  .login-container {
+    width: 480px;
+    height: 500px;
+  }
+}
