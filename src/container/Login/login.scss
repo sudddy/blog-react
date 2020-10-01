@@ -1,13 +1,22 @@
-.whole-container {
-  position: relative;
-  .img-background {
-    height: 100vh;
-    object-fit: cover;
-    width: 100%;
-    z-index: 1;
-  }
+.whole-login {
+  display: flex;
+  justify-content: center;
   .login-container {
-    width: 480px;
-    height: 500px;
+    background: #dad4d4;
+    margin-top: 100px;
+    border-radius: 8px 8px 8px 8px;
+    width: 400px;
+    margin-top: 200px;
+    @media only screen and (max-width: 450px) {
+      width: 300px !important;
+      margin: 100px 10px;
+    }
+    .heading {
+      padding-top: 25px;
+    }
+    .form-fields {
+      display: inline-block;
+      padding: 10px 5px;
+    }
   }
 }

@@ -1,9 +1,12 @@
 import { makeStyles } from "@material-ui/core/styles";
-export const useStyles = makeStyles({
+export const useStyles = makeStyles(theme => ({
   root: {
-    width: "auto",
+    width: "280px",
     height: "auto",
-    background: "#fffff"
+    backgroundColor: "#e2e1e1",
+    [theme.breakpoints.up("sm")]: {
+      width: "auto"
+    }
   },
   title: {
     fontSize: 14,
@@ -20,5 +23,8 @@ export const useStyles = makeStyles({
   actions: {
     display: "flex",
     justifyContent: "center"
+  },
+  textColor: {
+    color: "#000"
   }
-});
+}));

@@ -33,10 +33,20 @@ const Cards = props => {
     <Card className={classes.root}>
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="h2"
+            className={classes.textColor}
+          >
             <b>{props.name}</b>
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            className={classes.textColor}
+            component="p"
+          >
             {props.description
               ? props.description
               : "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"}

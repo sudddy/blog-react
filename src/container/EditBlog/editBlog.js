@@ -6,6 +6,8 @@ import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { InputField, Modal } from "../../component/index";
 import { SubmitButton } from "../../component/index";
+import "./editBlog.scss";
+import { Header } from "../../component/index";
 
 const EditBlog = props => {
   const [isModalOpen, toggleModal] = useState(false);
@@ -49,11 +51,15 @@ const EditBlog = props => {
   };
 
   return (
-    <div className="whole-container">
-      <div className="container">
+    <div className="whole-edit-blog">
+      <Header />
+      <div className="container edit-blog-container">
+        <Typography className="heading" variant="h3">
+          {" "}
+          Edit Blog
+        </Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form-fields">
-            <Row className="each-row"></Row>
             <Row className="each-row">
               <Col>
                 <Controller
@@ -62,7 +68,7 @@ const EditBlog = props => {
                   name="name"
                   control={control}
                   id={"outlined-full-width"}
-                  width={310}
+                  width={290}
                 />
               </Col>
             </Row>
@@ -73,7 +79,7 @@ const EditBlog = props => {
                   name="description"
                   label={"Blog Descrition"}
                   control={control}
-                  width={310}
+                  width={290}
                 />
               </Col>
             </Row>

@@ -6,10 +6,11 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
+import ArrowDropDownCircleRoundedIcon from "@material-ui/icons/ArrowDropDownCircleRounded";
+import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { headerStyles } from "./headerStyles";
-import ArrowDropDownCircleRoundedIcon from "@material-ui/icons/ArrowDropDownCircleRounded";
 const Header = props => {
   const classes = headerStyles();
   const theme = useTheme();
@@ -38,6 +39,10 @@ const Header = props => {
     logout();
   };
 
+  const handleHome = () => {
+    history.push("/dashboard");
+  };
+
   useEffect(() => {
     let user_details = JSON.parse(localStorage.getItem("user_details"));
     let userId = parseInt(localStorage.getItem("loggedUsedId"));
@@ -60,9 +65,9 @@ const Header = props => {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.toolbarStyle}>
           <Typography className={classes.welcomeFont}>
-            Welcome to the BLOG
+            Welcome, {username}
           </Typography>
-
+          &nbsp; &nbsp; <HomeRoundedIcon onClick={handleHome} />
           <div className={classes.toolbarMenu}>
             <IconButton
               aria-label="account of current user"
@@ -71,10 +76,6 @@ const Header = props => {
               onClick={handleMenu}
               color="inherit"
             >
-              <Typography className={classes.welcomeFont}>
-                {username}
-              </Typography>
-              &nbsp;
               <ArrowDropDownCircleRoundedIcon />
             </IconButton>
 

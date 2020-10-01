@@ -1,7 +1,7 @@
-.whole-signup {
+.whole-edit {
   display: flex;
   justify-content: center;
-  .signup-container {
+  .edit-container {
     background: #dad4d4;
     margin-top: 100px;
     border-radius: 8px 8px 8px 8px;
@@ -9,7 +9,7 @@
     margin-top: 200px;
     @media only screen and (max-width: 450px) {
       width: 300px !important;
-      margin: 100px 10px;
+      margin: 100px 15px;
     }
     .heading {
       padding-top: 25px;

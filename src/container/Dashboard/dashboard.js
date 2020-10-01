@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { Cards, SubmitButton } from "../../component/index";
 import { Header } from "../../component/index";
 import "./dashboard.scss";
+import { Typography } from "@material-ui/core";
 
 const Dashboard = props => {
   const [blogDetails, setblogDetails] = useState([]);
@@ -41,12 +42,12 @@ const Dashboard = props => {
   const viewClass = () => {
     if (blogDetails.length === 0) {
       return (
-        <div className="whole-container">
+        <div>
+          <div>
+            <h1 className="title"> Wow, such Empty! Please add some blogs</h1>;
+          </div>
           <Row className="no-blogs">
-            <Col lg={12}>
-              <h4> No blogs to dislay</h4>
-            </Col>
-            <br />
+            <br /> <br />
             <Col>
               <SubmitButton
                 label="Add Blog"

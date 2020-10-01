@@ -4,9 +4,9 @@ import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import { InputField, Modal } from "../../component/index";
-import { SubmitButton } from "../../component/index";
+import { InputField, Modal, SubmitButton } from "../../component/index";
 import "./createBlog.scss";
+import { Header } from "../../component/index";
 
 const CreateBlog = props => {
   const [isModalOpen, toggleModal] = useState(false);
@@ -52,11 +52,15 @@ const CreateBlog = props => {
   };
 
   return (
-    <div className="whole-container">
-      <div className="container">
+    <div className="whole-create">
+      <Header />
+      <div className="container create-container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <Typography className="heading" variant="h3">
+            {" "}
+            Create Blog
+          </Typography>
           <div className="form-fields">
-            <Row className="each-row"></Row>
             <Row className="each-row">
               <Col>
                 <Controller
@@ -65,7 +69,7 @@ const CreateBlog = props => {
                   name="name"
                   control={control}
                   id={"outlined-full-width"}
-                  width={310}
+                  width={290}
                 />
               </Col>
             </Row>
@@ -76,7 +80,7 @@ const CreateBlog = props => {
                   name="description"
                   label={"Blog Descrition"}
                   control={control}
-                  width={310}
+                  width={290}
                 />
               </Col>
             </Row>

@@ -1,16 +1,15 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
-import { Col, Image, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import background from "../../assets/blog.jpeg"; // with import
-import { InputField, SubmitButton } from "../../component/index";
-import { Modal } from "../../component/index";
+import { InputField, Modal, SubmitButton } from "../../component/index";
 import "./signup.scss";
+import { Typography } from "@material-ui/core";
 
 const Signup = props => {
   const [isModalOpen, toggleModal] = useState(false);
 
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, register, errors } = useForm({
     defaultValues: ""
   });
 
@@ -42,10 +41,12 @@ const Signup = props => {
   };
 
   return (
-    <div className="whole-container">
-      <Image src={background} className="img-background" />
-
+    <div className="whole-signup">
       <div className="container signup-container">
+        <Typography className="heading" variant="h3">
+          {" "}
+          Sign up
+        </Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form-fields">
             <Row className="each-row"></Row>
@@ -56,9 +57,13 @@ const Signup = props => {
                   label={"First Name"}
                   name="firstName"
                   control={control}
+                  ref={register({ required: true })}
                   id={"outlined-full-width"}
-                  width={310}
+                  width={290}
                 />
+                {errors.firstName && (
+                  <span role="alert">This field is required</span>
+                )}
               </Col>
             </Row>
             <Row className="each-row">
@@ -66,10 +71,14 @@ const Signup = props => {
                 <Controller
                   as={InputField}
                   name="lastName"
+                  ref={register({ required: true })}
                   label={"Last Name"}
                   control={control}
-                  width={310}
+                  width={290}
                 />
+                {errors.lastName && (
+                  <span role="alert">This field is required</span>
+                )}
               </Col>
             </Row>
             <Row className="each-row">
@@ -78,9 +87,17 @@ const Signup = props => {
                   as={InputField}
                   name="email"
                   label={"Email Id"}
+                  ref={register({
+                    required: "Required",
+                    pattern: {
+                      value: /^ [A - Z0 -9._ % +-] +@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "invalid email address"
+                    }
+                  })}
                   control={control}
-                  width={310}
+                  width={290}
                 />
+                {errors.email && errors.email.message}
               </Col>
             </Row>
             <Row className="each-row">
@@ -90,9 +107,13 @@ const Signup = props => {
                   name="password"
                   label={"Password"}
                   type={"password"}
+                  ref={register({ required: true })}
                   control={control}
-                  width={310}
+                  width={290}
                 />
+                {errors.password && (
+                  <span role="alert">This field is required</span>
+                )}
               </Col>
             </Row>
             <Row className="each-row">

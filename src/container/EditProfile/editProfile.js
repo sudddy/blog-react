@@ -1,15 +1,16 @@
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Col, Image, Row } from "react-bootstrap";
+import { Col, Row, Image } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import background from "../../assets/blog.jpeg"; // with import
-import { InputField, Modal, SubmitButton } from "../../component/index";
+import { Header, InputField, Modal, SubmitButton } from "../../component/index";
+import "./editProfile.scss";
 
 const EditProfile = props => {
   const [isModalOpen, toggleModal] = useState(false);
   const [dialogMessage, setdialogMessage] = useState("");
   const [currentUser, setCurrentUser] = useState({});
+  const [imageData, setImageData] = useState("");
+  var storedImg;
   const { handleSubmit, control, setValue, register } = useForm({
     defaultValues: {}
   });
@@ -17,6 +18,7 @@ const EditProfile = props => {
   useEffect(() => {
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
     setCurrentUser(loggedInUser[0]);
+
     setValue("firstName", loggedInUser[0].firstName);
     setValue("lastName", loggedInUser[0].lastName);
     console.log(loggedInUser[0]);
@@ -24,6 +26,18 @@ const EditProfile = props => {
 
   async function onSubmit(formValues) {
     console.log(formValues);
+    var fileReader = new FileReader();
+
+    if (formValues.img.length) {
+      const handleFileRead = fileReader => {
+        const content = fileReader.target.result;
+        localStorage.setItem("img", content);
+      };
+
+      fileReader.onloadend = handleFileRead;
+      fileReader.readAsDataURL(formValues.img[0]);
+    }
+
     let loginDetails = JSON.parse(localStorage.getItem("user_details"));
     let currentUserDetails;
 
@@ -48,13 +62,28 @@ const EditProfile = props => {
     props.history.push("/dashboard");
   };
 
-  return (
-    <div className="whole-container">
-      <div className="container login-container">
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-fields">
-            <Row className="each-row"></Row>
+  const displayPicture = () => {
+    storedImg = localStorage.getItem("img");
+    if (!storedImg) {
+      return <h5> Please upload image to view</h5>;
+    }
+    return <Image src={storedImg} width="300px" height="300px" />;
+  };
 
+  return (
+    <div className="whole-edit">
+      <Header />
+
+      <div className="container edit-container">
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <Typography className="heading" variant="h3">
+            {" "}
+            Edit Profile
+          </Typography>
+
+          <Row>{displayPicture()}</Row>
+
+          <div className="form-fields">
             <Row className="each-row">
               <Col>
                 <Controller
@@ -63,7 +92,7 @@ const EditProfile = props => {
                   label={"First Name"}
                   ref={register}
                   control={control}
-                  width="300px"
+                  width="290px"
                 />
               </Col>
             </Row>
@@ -75,7 +104,18 @@ const EditProfile = props => {
                   ref={register}
                   label={"Last Name"}
                   control={control}
-                  width="300px"
+                  width="290px"
+                />
+              </Col>
+            </Row>
+            <br />
+            <Row className="each-row">
+              <Col>
+                <input
+                  type="file"
+                  name="img"
+                  ref={register}
+                  control={control}
                 />
               </Col>
             </Row>
@@ -90,15 +130,11 @@ const EditProfile = props => {
               </Col>
             </Row>
           </div>
-          <div>
-            <br />
-          </div>
         </form>
-
-        <Modal isOpen={isModalOpen} dialogMessage={dialogMessage}>
-          <SubmitButton label="ok" onClick={handleModalClick}></SubmitButton>
-        </Modal>
       </div>
+      <Modal isOpen={isModalOpen} dialogMessage={dialogMessage}>
+        <SubmitButton label="ok" onClick={handleModalClick}></SubmitButton>
+      </Modal>
     </div>
   );
 };

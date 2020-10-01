@@ -1,9 +1,7 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
-import { inputStyles } from "./inputFieldStyle";
 
 const InputField = props => {
-  const classes = inputStyles();
   return (
     <TextField
       id={props.id}
@@ -11,7 +9,6 @@ const InputField = props => {
       type={props.type}
       value={props.value}
       label={props.label}
-      className={classes.root}
       placeholder={props.label}
       variant="outlined"
       style={{ width: props.width }}

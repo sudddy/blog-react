@@ -1,11 +1,9 @@
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import React, { useEffect, useState } from "react";
-import { Col, Image, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import background from "../../assets/blog.jpeg"; // with import
 import { InputField, Modal, SubmitButton } from "../../component/index";
 import "./login.scss";
+import { Typography } from "@material-ui/core";
 
 const Login = props => {
   const [isModalOpen, toggleModal] = useState(false);
@@ -52,11 +50,14 @@ const Login = props => {
   };
 
   return (
-    <div className="whole-container">
-      <Image src={background} className="img-background" />
+    <div className="whole-login">
       <div className="container login-container">
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-fields">
+        <Typography className="heading" variant="h3">
+          {" "}
+          Login
+        </Typography>
+        <form className="form-login" onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-login-fields">
             <Row className="each-row"></Row>
 
             <Row className="each-row">
@@ -66,7 +67,7 @@ const Login = props => {
                   name="email"
                   label={"Email Id"}
                   control={control}
-                  width="300px"
+                  width="290px"
                 />
               </Col>
             </Row>
@@ -78,7 +79,7 @@ const Login = props => {
                   label={"Password"}
                   type={"password"}
                   control={control}
-                  width="300px"
+                  width="290px"
                 />
               </Col>
             </Row>

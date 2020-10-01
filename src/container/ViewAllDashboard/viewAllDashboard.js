@@ -30,22 +30,21 @@ const ViewAllDashboard = props => {
   const viewClass = () => {
     if (!blogDetails) {
       return (
-        <div className="whole-container">
+        <div>
+          <div>
+            <h1 className="title"> Wow, such Empty! Please add some blogs</h1>;
+          </div>
           <Row className="no-blogs">
-            <Col lg={12}>
-              <h4> No blogs to dislay</h4>
-            </Col>
-          </Row>
-
-          <Row className="add-blogs">
-            <Col lg={12}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleCreateBlog}
-              >
-                Create Blog
-              </Button>
+            <br /> <br />
+            <Col>
+              <Row className="add-blogs">
+                <SubmitButton
+                  label="View My Blogs"
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleViewMyDashboard}
+                ></SubmitButton>
+              </Row>
             </Col>
           </Row>
         </div>

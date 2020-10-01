@@ -5,10 +5,10 @@ export const headerStyles = makeStyles(theme => ({
   },
 
   appBar: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("xs")]: {
       width: "100%",
       height: "80px",
-      backgroundColor: "#6648ff",
+      backgroundColor: "#dd904e",
       borderRadius: "0px 0px 6px 6px"
     }
   },
@@ -19,8 +19,6 @@ export const headerStyles = makeStyles(theme => ({
       display: "none"
     }
   },
-  toolbar: theme.mixins.toolbar,
-
   welcomeFont: {
     fontSize: "16px",
     paddingLeft: "15px"
