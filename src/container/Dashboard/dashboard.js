@@ -1,11 +1,8 @@
-import Button from "@material-ui/core/Button";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { Cards, SubmitButton } from "../../component/index";
-import { Header } from "../../component/index";
+import { Cards, Header, SubmitButton } from "../../component/index";
 import "./dashboard.scss";
-import { Typography } from "@material-ui/core";
 
 const Dashboard = props => {
   const [blogDetails, setblogDetails] = useState([]);

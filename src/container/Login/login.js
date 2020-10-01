@@ -19,6 +19,7 @@ const Login = props => {
     console.log(formValues);
     let loginDetails = JSON.parse(localStorage.getItem("user_details"));
     if (loginDetails !== null && loginDetails !== undefined) {
+      // eslint-disable-next-line array-callback-return
       var loggedInUser = loginDetails.filter(user => {
         if (
           user.email === formValues.email &&

@@ -4,7 +4,6 @@ import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import ArrowDropDownCircleRoundedIcon from "@material-ui/icons/ArrowDropDownCircleRounded";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
@@ -13,7 +12,6 @@ import { useHistory } from "react-router-dom";
 import { headerStyles } from "./headerStyles";
 const Header = props => {
   const classes = headerStyles();
-  const theme = useTheme();
   const history = useHistory();
 
   const [anchorEl, setAnchorEl] = React.useState(null);

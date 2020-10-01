@@ -23,6 +23,7 @@ const EditBlog = props => {
     setValue("description", existingBlogDetails.description);
     setValue("content", existingBlogDetails.content);
     setCurrentBlog(existingBlogDetails);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = formValues => {

@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Image } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { SubmitButton } from "../../component";
 import { Header } from "../../component/index";
@@ -90,12 +90,14 @@ export default function ViewBlog() {
       setblogDetails(content);
     }
     updateComment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateComment = () => {
     let content = JSON.parse(localStorage.getItem("view_blog"));
     let localComments = JSON.parse(localStorage.getItem("blog_details"));
     if (localComments != null) {
+      // eslint-disable-next-line array-callback-return
       localComments = localComments.map(blog => {
         if (blog.id === content.id) {
           console.log("this is inside blog", blog.comments);
@@ -113,6 +115,7 @@ export default function ViewBlog() {
   useEffect(() => {
     updateComment();
     setNewComment(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newComment]);
 
   const saveComments = comment => {

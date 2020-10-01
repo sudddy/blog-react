@@ -9,7 +9,6 @@ const EditProfile = props => {
   const [isModalOpen, toggleModal] = useState(false);
   const [dialogMessage, setdialogMessage] = useState("");
   const [currentUser, setCurrentUser] = useState({});
-  const [imageData, setImageData] = useState("");
   var storedImg;
   const { handleSubmit, control, setValue, register } = useForm({
     defaultValues: {}
@@ -22,6 +21,7 @@ const EditProfile = props => {
     setValue("firstName", loggedInUser[0].firstName);
     setValue("lastName", loggedInUser[0].lastName);
     console.log(loggedInUser[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function onSubmit(formValues) {
