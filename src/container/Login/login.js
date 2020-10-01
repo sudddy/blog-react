@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
@@ -50,6 +51,10 @@ const Login = props => {
     }
   };
 
+  const handleSignup = () => {
+    props.history.push("/signup");
+  };
+
   return (
     <div className="whole-login">
       <div className="container login-container">
@@ -85,20 +90,25 @@ const Login = props => {
               </Col>
             </Row>
 
-            <Row className="each-row">
-              <Col className="sub-button">
-                <SubmitButton
-                  control={control}
-                  type="submit"
-                  label=" Login"
-                ></SubmitButton>
-              </Col>
-            </Row>
+            <SubmitButton
+              control={control}
+              type="submit"
+              label=" Login"
+            ></SubmitButton>
           </div>
           <div>
             <br />
           </div>
         </form>
+
+        <Row>
+          <div className="signup">
+            <Typography className="s-text">New to the blog?</Typography>
+            <a onClick={handleSignup}>signup</a>
+          </div>
+          <br />
+          <br />
+        </Row>
 
         <Modal isOpen={isModalOpen} dialogMessage={dialogMessage}>
           <SubmitButton label="ok" onClick={handleModalClick}></SubmitButton>
