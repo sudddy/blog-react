@@ -1,5 +1,3 @@
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
@@ -7,22 +5,15 @@ import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { SubmitButton } from "../../component";
-import { Header, InputMultiLine } from "../../component/index";
+import { Header, InputMultiLine, CommentCard } from "../../component/index";
 import { fetchBlogById, updateBlog } from "../../store/blog";
 import { useStyles } from "./viewBlogStyle";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import CardHeader from "@material-ui/core/CardHeader";
 
 const ViewBlog = props => {
   const classes = useStyles();
+  const { handleSubmit, control, register } = useForm();
   const [comments, setComments] = useState([]);
-  const [click, setClick] = useState(true);
-
-  const { handleSubmit, control, register } = useForm({
-    defaultValues: ""
-  });
+  const [clickId, setClickId] = useState(false);
 
   useEffect(() => {
     let viewBlogId = localStorage.getItem("ViewBlogId");
@@ -32,7 +23,7 @@ const ViewBlog = props => {
         userId: "rags",
         userName: "Raghavan Chandrasekar",
         comment: "Heyy, Nice article about world war",
-        commentId: 2,
+        commentId: 1,
         image: "",
         likes: 3,
         userIdLiked: []
@@ -41,7 +32,7 @@ const ViewBlog = props => {
         userId: "rags",
         userName: "Chandrasekar Narasimhan",
         comment: "Good one",
-        commentId: 1,
+        commentId: 2,
         image: "",
         likes: ""
       }
@@ -53,14 +44,6 @@ const ViewBlog = props => {
   const saveComments = comment => {};
 
   const onSubmit = formValues => {};
-
-  const handleLike = () => {
-    if (click) {
-      setClick(false);
-    } else {
-      setClick(true);
-    }
-  };
 
   const displayComments = comments => {
     if (comments.length === 0) {
@@ -78,42 +61,11 @@ const ViewBlog = props => {
     return (
       <div className={classes.comments}>
         {comments.map(comment => (
-          <Row>
-            <Col lg={12} sm={12} md={12}>
-              <Card className={classes.cards}>
-                <CardContent className="classes.commentContent">
-                  <CardHeader
-                    avatar={
-                      <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
-                      </Avatar>
-                    }
-                    title={comment.userName}
-                    subheader={comment.comment}
-                  />
-                  <div className={classes.likeContent}>
-                    <IconButton
-                      className={classes.likeIcon}
-                      onClick={handleLike}
-                    >
-                      <FavoriteIcon
-                        className={`${
-                          click ? classes.likeButton : classes.unlikeButton
-                        }`}
-                      />
-                    </IconButton>
-                    <Typography
-                      className={classes.likes}
-                      variant="body2"
-                      color="textSecondary"
-                    >
-                      6 Likes
-                    </Typography>
-                  </div>
-                </CardContent>
-              </Card>
-            </Col>
-          </Row>
+          <CommentCard
+            commentId={comment.commentId}
+            userName={comment.userName}
+            comment={comment.comment}
+          />
         ))}
       </div>
     );
