@@ -3,19 +3,18 @@ import { Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Cards, SubmitButton } from "../../component/index";
 import { Header } from "../../component/index";
+import { fetchBlogList } from "../../store/blog";
+import { connect } from "react-redux";
 
 const ViewAllDashboard = props => {
-  const [blogDetails, setblogDetails] = useState([]);
-
   const history = useHistory();
+
   useEffect(() => {
-    // localStorage.setItem("blog_details", JSON.stringify(sampleBlog));
-    setblogDetails(JSON.parse(localStorage.getItem("blog_details")));
+    props.fetchBlogList();
   }, []);
 
-  const handleBlog = (i, blogDetails) => {
-    console.log("key", i);
-    localStorage.setItem("view_blog", JSON.stringify(blogDetails));
+  const handleBlog = i => {
+    localStorage.setItem("ViewBlogId", i);
     history.push(`/viewBlog/${i}`);
   };
 
@@ -26,8 +25,8 @@ const ViewAllDashboard = props => {
     history.push("/dashboard");
   };
 
-  const viewClass = () => {
-    if (!blogDetails) {
+  const viewAllBlogs = () => {
+    if (Object.keys(props.blogDetails).length === 0) {
       return (
         <div>
           <div>
@@ -53,15 +52,15 @@ const ViewAllDashboard = props => {
     return (
       <div className="blogs">
         <Row>
-          {blogDetails.map((blogDetail, index) => (
+          {props.blogDetails.blog_list.map((blogDetail, index) => (
             <Col className="column">
               {" "}
               <Cards
-                name={blogDetail.name}
-                description={blogDetail.description}
-                key={blogDetail.id}
+                name={blogDetail.blogName}
+                description={blogDetail.blogDescription}
+                key={blogDetail._id}
                 onClickView={() => {
-                  handleBlog(blogDetail.id, blogDetail);
+                  handleBlog(blogDetail._id);
                 }}
               ></Cards>
             </Col>
@@ -90,9 +89,17 @@ const ViewAllDashboard = props => {
   return (
     <div className="main">
       <Header />
-      {viewClass()}
+      {viewAllBlogs()}
     </div>
   );
 };
 
-export default ViewAllDashboard;
+const mapStateToProps = state => {
+  console.log(state);
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchBlogList }
+)(ViewAllDashboard);

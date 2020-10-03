@@ -1,50 +1,61 @@
 import { Button } from "@material-ui/core";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import { InputField, Modal } from "../../component/index";
-import { SubmitButton } from "../../component/index";
+import {
+  Header,
+  InputField,
+  InputMultiLine,
+  Modal,
+  SubmitButton
+} from "../../component/index";
 import "./editBlog.scss";
-import { Header } from "../../component/index";
+import { connect } from "react-redux";
+import { updateBlog, fetchBlogById } from "../../store/blog";
 
 const EditBlog = props => {
   const [isModalOpen, toggleModal] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState({});
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [field, setField] = useState(false);
+  const [update, setUpdate] = useState(false);
 
   const { handleSubmit, control, register, setValue } = useForm({
     defaultValues: ""
   });
 
   useEffect(() => {
-    let existingBlogDetails = JSON.parse(localStorage.getItem("edit_blog"));
-    setValue("name", existingBlogDetails.name);
-    setValue("description", existingBlogDetails.description);
-    setValue("content", existingBlogDetails.content);
-    setCurrentBlog(existingBlogDetails);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    let editblogId = localStorage.getItem("editBlogId");
+    props.fetchBlogById(editblogId);
+    setField(true);
   }, []);
 
-  const onSubmit = formValues => {
-    console.log(formValues);
+  useEffect(() => {
+    if (props.blogDetails.hasOwnProperty("blogDetail") && field) {
+      setValue("blogName", props.blogDetails.blogDetail.blogName);
+      setValue("blogDescription", props.blogDetails.blogDetail.blogDescription);
+      setValue("blogContent", props.blogDetails.blogDetail.blogContent);
+      setField(false);
+    }
+  }, [props]);
 
-    let fullBlogDetails = JSON.parse(localStorage.getItem("blog_details"));
-
-    fullBlogDetails = fullBlogDetails.map(blog => {
-      if (blog.id === currentBlog.id) {
-        blog.name = formValues.name;
-        blog.description = formValues.description;
-        blog.content = formValues.content;
-        return blog;
+  useEffect(() => {
+    if (update) {
+      if (props.blogDetails.hasOwnProperty("updateResult")) {
+        if (props.blogDetails.updateResult.n === 1) {
+          toggleModal(true);
+          setDialogMessage("updated Successfully");
+          setUpdate(false);
+        }
       }
-      return blog;
-    });
-    console.log(fullBlogDetails);
-    localStorage.setItem("blog_details", JSON.stringify(fullBlogDetails));
-    toggleModal(true);
-  };
-  useEffect(() => {}, []);
+    }
+  }, [update]);
+
+  async function onSubmit(formValues) {
+    formValues._id = props.blogDetails.blogDetail._id;
+    await props.updateBlog(formValues);
+    setUpdate(true);
+  }
 
   const handleModalClick = e => {
     toggleModal(false);
@@ -66,10 +77,9 @@ const EditBlog = props => {
                 <Controller
                   as={InputField}
                   label={"Blog Name"}
-                  name="name"
+                  name="blogName"
                   control={control}
                   id={"outlined-full-width"}
-                  width={290}
                 />
               </Col>
             </Row>
@@ -77,23 +87,21 @@ const EditBlog = props => {
               <Col>
                 <Controller
                   as={InputField}
-                  name="description"
+                  name="blogDescription"
                   label={"Blog Descrition"}
                   control={control}
-                  width={290}
                 />
               </Col>
             </Row>
+
             <Row className="each-row">
-              <Col className="heading">
-                <Typography>Blog content</Typography>
-              </Col>
               <Col>
-                <TextareaAutosize
-                  className="textarea"
-                  rowsMax={8}
-                  name="content"
+                <Controller
+                  as={InputMultiLine}
+                  label={"Blog Content"}
+                  name="blogContent"
                   control={control}
+                  fullWidth
                   ref={register}
                   aria-label="maximum height"
                   placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -121,7 +129,7 @@ const EditBlog = props => {
           </div>
         </form>
       </div>
-      <Modal isOpen={isModalOpen} dialogMessage={"Blog Edited Successfully"}>
+      <Modal isOpen={isModalOpen} dialogMessage={dialogMessage}>
         <SubmitButton
           label="ok"
           className="modal-button"
@@ -132,4 +140,11 @@ const EditBlog = props => {
   );
 };
 
-export default EditBlog;
+const mapStateToProps = state => {
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { updateBlog, fetchBlogById }
+)(EditBlog);

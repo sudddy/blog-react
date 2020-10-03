@@ -43,18 +43,10 @@ const Header = props => {
 
   useEffect(() => {
     let user_details = JSON.parse(localStorage.getItem("user_details"));
-    let userId = parseInt(localStorage.getItem("loggedUsedId"));
-    if (user_details != null) {
-      console.log(user_details);
-      user_details = user_details.filter(user => {
-        return user.userId === userId;
-      });
-    }
-    console.log(user_details);
-    setUsername(user_details[0].firstName + " " + user_details[0].lastName);
+    setUsername(user_details.firstName + " " + user_details.lastName);
     localStorage.setItem(
       "logggedInUsername",
-      user_details[0].firstName + " " + user_details[0].lastName
+      user_details.firstName + " " + user_details.lastName
     );
   }, []);
 

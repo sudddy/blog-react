@@ -17,6 +17,9 @@
     .form-fields {
       display: inline-block;
       padding: 10px 5px;
+      .each-row {
+        margin-bottom: 10px;
+      }
     }
   }
 }

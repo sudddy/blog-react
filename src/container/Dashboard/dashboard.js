@@ -3,29 +3,25 @@ import { Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Cards, Header, SubmitButton } from "../../component/index";
 import "./dashboard.scss";
+import { fetchBlogByUserId } from "../../store/blog";
+import { connect } from "react-redux";
 
 const Dashboard = props => {
-  const [blogDetails, setblogDetails] = useState([]);
-
   const history = useHistory();
+
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("loggedInUser"));
-    let blogs = JSON.parse(localStorage.getItem("blog_details"));
-    let finalBlogs = [];
-    if (blogs !== null) {
-      finalBlogs = blogs.filter(blog => blog.userId === user[0].userId);
-    }
-    setblogDetails(finalBlogs);
+    let userId = JSON.parse(localStorage.getItem("user_details"));
+    props.fetchBlogByUserId(userId._id);
   }, []);
 
-  const handleViewBlog = (i, blogDetails) => {
-    localStorage.setItem("view_blog", JSON.stringify(blogDetails));
+  const handleViewBlog = i => {
+    localStorage.setItem("ViewBlogId", i);
     history.push(`/viewBlog/${i}`);
   };
 
-  const handleEditBlog = (i, blogDetails) => {
-    localStorage.setItem("edit_blog", JSON.stringify(blogDetails));
-    history.push(`/editBlog`);
+  const handleEditBlog = i => {
+    localStorage.setItem("editBlogId", i);
+    history.push(`/editBlog/${i}`);
   };
 
   const handleCreateBlog = () => {
@@ -37,7 +33,7 @@ const Dashboard = props => {
   };
 
   const viewClass = () => {
-    if (blogDetails.length === 0) {
+    if (!props.blogDetails.hasOwnProperty("blog_list")) {
       return (
         <div>
           <div>
@@ -69,19 +65,19 @@ const Dashboard = props => {
     return (
       <div className="blogs">
         <Row>
-          {blogDetails.map((blogDetail, index) => (
+          {props.blogDetails.blog_list.map((blogDetail, index) => (
             <Col className="column">
               {" "}
               <Cards
                 edit={"1"}
-                name={blogDetail.name}
-                description={blogDetail.description}
-                key={blogDetail.id}
+                name={blogDetail.blogName}
+                description={blogDetail.blogDescription}
+                key={blogDetail._id}
                 onClickView={() => {
-                  handleViewBlog(blogDetail.id, blogDetail);
+                  handleViewBlog(blogDetail._id);
                 }}
                 onClickEdit={() => {
-                  handleEditBlog(blogDetail.id, blogDetail);
+                  handleEditBlog(blogDetail._id);
                 }}
               ></Cards>
             </Col>
@@ -115,4 +111,12 @@ const Dashboard = props => {
   );
 };
 
-export default Dashboard;
+const mapStateToProps = state => {
+  console.log(state);
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { fetchBlogByUserId }
+)(Dashboard);

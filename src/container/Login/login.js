@@ -4,44 +4,41 @@ import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { InputField, Modal, SubmitButton } from "../../component/index";
 import "./login.scss";
+import { loginUser } from "../../store/user";
+import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
 
 const Login = props => {
   const [isModalOpen, toggleModal] = useState(false);
   const [Login, setLogin] = useState(false);
-  const [dialogMessage, setdialogMessage] = useState("");
   const { handleSubmit, control } = useForm({
     defaultValues: ""
   });
 
-  useEffect(() => {}, [props]);
-
-  async function onSubmit(formValues) {
-    console.log(formValues);
-    let loginDetails = JSON.parse(localStorage.getItem("user_details"));
-    if (loginDetails !== null && loginDetails !== undefined) {
-      // eslint-disable-next-line array-callback-return
-      var loggedInUser = loginDetails.filter(user => {
-        if (
-          user.email === formValues.email &&
-          user.password === formValues.password
-        ) {
-          return user;
+  useEffect(() => {
+    if (Object.keys(props.user).length > 0) {
+      if ("logged_user" in props.user) {
+        if (props.user.logged_user.code === "03") {
+          setLogin(false);
+          toggleModal(true);
+          return;
         }
-      });
-
-      if (loggedInUser.length) {
-        console.log("user", loggedInUser);
-        localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-        localStorage.setItem("loggedUsedId", parseInt(loggedInUser[0].userId));
-        toggleModal(true);
-        setdialogMessage("Logged in Successfully");
-        setLogin(true);
-      } else {
-        toggleModal(true);
-        setdialogMessage("Email/ Password is invalid");
+        if (props.user.logged_user.user) {
+          localStorage.setItem(
+            "user_details",
+            JSON.stringify(props.user.logged_user.user)
+          );
+          setLogin(true);
+          toggleModal(true);
+        } else {
+          setLogin(false);
+        }
       }
     }
+  }, [props]);
+
+  async function onSubmit(formValues) {
+    await props.loginUser(formValues);
   }
 
   const handleModalClick = e => {
@@ -110,7 +107,12 @@ const Login = props => {
           <br />
         </Row>
 
-        <Modal isOpen={isModalOpen} dialogMessage={dialogMessage}>
+        <Modal
+          isOpen={isModalOpen}
+          dialogMessage={
+            Login ? "Login successful" : "Email/Password is invalid"
+          }
+        >
           <SubmitButton label="ok" onClick={handleModalClick}></SubmitButton>
         </Modal>
       </div>
@@ -118,4 +120,12 @@ const Login = props => {
   );
 };
 
-export default Login;
+const mapStateToProps = state => {
+  console.log(state);
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

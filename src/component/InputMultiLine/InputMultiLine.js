@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 
-const InputField = props => {
+const InputMultiLine = props => {
   return (
     <TextField
       id={props.id}
@@ -11,7 +11,8 @@ const InputField = props => {
       label={props.label}
       placeholder={props.label}
       variant="outlined"
-      // style={{ width: props.width }}
+      multiline
+      rows={8}
       fullWidth
       margin="normal"
       color="red"
@@ -26,4 +27,4 @@ const InputField = props => {
     />
   );
 };
-export default InputField;
+export default InputMultiLine;

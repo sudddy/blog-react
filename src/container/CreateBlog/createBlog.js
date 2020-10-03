@@ -1,50 +1,44 @@
 import { Button } from "@material-ui/core";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
-import { InputField, Modal, SubmitButton } from "../../component/index";
+import { connect } from "react-redux";
+import {
+  Header,
+  InputField,
+  Modal,
+  SubmitButton,
+  InputMultiLine
+} from "../../component/index";
+
+import { addBlog } from "../../store/blog";
 import "./createBlog.scss";
-import { Header } from "../../component/index";
 
 const CreateBlog = props => {
   const [isModalOpen, toggleModal] = useState(false);
-
+  const [dialogMessage, setDialogMessage] = useState("");
   const { handleSubmit, control, register } = useForm({
     defaultValues: ""
   });
 
-  const onSubmit = formValues => {
-    console.log(formValues);
+  async function onSubmit(formValues) {
+    let userId = JSON.parse(localStorage.getItem("user_details"));
+    formValues.userId = userId;
+    await props.addBlog(formValues);
+  }
 
-    //get blog details
-    let existingBlogDetails = JSON.parse(localStorage.getItem("blog_details"));
-    if (existingBlogDetails === null || existingBlogDetails === undefined) {
-      existingBlogDetails = [];
+  useEffect(() => {
+    if (props.blogDetails.hasOwnProperty("added_blog")) {
+      if (props.blogDetails.added_blog._id) {
+        setDialogMessage("Blog Created Successfully");
+        toggleModal(true);
+      } else {
+        setDialogMessage("Blog creation failed. Please try again");
+        toggleModal(true);
+      }
     }
-
-    let id = parseInt(localStorage.getItem("maximumID"));
-    if (Number.isNaN(id)) {
-      id = 0;
-      localStorage.setItem("maximumID", 0);
-    }
-    id += 1;
-    console.log("id check", id);
-
-    let user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-    formValues.id = id;
-    formValues.userId = user[0].userId;
-
-    console.log(existingBlogDetails);
-
-    existingBlogDetails.push(formValues);
-    localStorage.setItem("maximumID", id);
-    localStorage.setItem("blog_details", JSON.stringify(existingBlogDetails));
-    toggleModal(true);
-  };
-  useEffect(() => {}, []);
+  }, [props]);
 
   const handleModalClick = e => {
     toggleModal(false);
@@ -66,10 +60,9 @@ const CreateBlog = props => {
                 <Controller
                   as={InputField}
                   label={"Blog Name"}
-                  name="name"
+                  name="blogName"
                   control={control}
                   id={"outlined-full-width"}
-                  width={290}
                 />
               </Col>
             </Row>
@@ -77,23 +70,20 @@ const CreateBlog = props => {
               <Col>
                 <Controller
                   as={InputField}
-                  name="description"
+                  name="blogDescription"
                   label={"Blog Descrition"}
                   control={control}
-                  width={290}
                 />
               </Col>
             </Row>
             <Row className="each-row">
-              <Col className="heading">
-                <Typography>Blog content</Typography>
-              </Col>
               <Col>
-                <TextareaAutosize
-                  className="textarea"
-                  rowsMax={8}
-                  name="content"
+                <Controller
+                  as={InputMultiLine}
+                  label={"Blog Content"}
+                  name="blogContent"
                   control={control}
+                  fullWidth
                   ref={register}
                   aria-label="maximum height"
                   placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -121,7 +111,7 @@ const CreateBlog = props => {
           </div>
         </form>
       </div>
-      <Modal isOpen={isModalOpen} dialogMessage={"Blog Created Successfully"}>
+      <Modal isOpen={isModalOpen} dialogMessage={dialogMessage}>
         <SubmitButton
           label="ok"
           className="modal-button"
@@ -132,4 +122,11 @@ const CreateBlog = props => {
   );
 };
 
-export default CreateBlog;
+const mapStateToProps = state => {
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { addBlog }
+)(CreateBlog);

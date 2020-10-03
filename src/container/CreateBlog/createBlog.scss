@@ -1,18 +1,12 @@
 .whole-create {
   height: 100vh;
-  display: flex;
-  justify-content: center;
+  padding: 30px;
   .create-container {
     background: #ffffff;
-    width: 400px;
-    height: 600px;
     margin-top: 150px;
+
     .heading {
       padding: 20px 0px;
-    }
-    .textarea {
-      width: 300px;
-      height: auto;
     }
     .button {
       padding-top: 35px;
@@ -23,8 +17,7 @@
       padding-top: 25px;
     }
     .form-fields {
-      display: inline-block;
-      padding-top: 10px;
+      padding: 20px;
     }
   }
   .modal-button {

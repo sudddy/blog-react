@@ -1,43 +1,38 @@
 import { Button } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { InputField, Modal, SubmitButton } from "../../component/index";
 import "./signup.scss";
+import { registerUser } from "../../store/user";
+import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
+import { ErrorMessage } from "@hookform/error-message";
 
 const Signup = props => {
   const [isModalOpen, toggleModal] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState();
 
   const { handleSubmit, control, register, errors } = useForm({
     defaultValues: ""
   });
 
   async function onSubmit(formValues) {
-    let existingUserDetails = JSON.parse(localStorage.getItem("user_details"));
-
-    if (existingUserDetails === null || existingUserDetails === undefined) {
-      existingUserDetails = [];
-    }
-
-    let id = parseInt(localStorage.getItem("userID"));
-    if (Number.isNaN(id)) {
-      id = 1000;
-      localStorage.setItem("userID", 1000);
-    }
-    id += 1;
-    console.log("id check", id);
-    formValues.userId = id;
-    existingUserDetails.push(formValues);
-
-    localStorage.setItem("userID", id);
-    localStorage.setItem("user_details", JSON.stringify(existingUserDetails));
-    toggleModal(true);
+    await props.registerUser(formValues);
   }
+
+  useEffect(() => {
+    if (Object.keys(props.user).length > 0) {
+      toggleModal(true);
+      setDialogMessage(props.user.user.message);
+    }
+  }, [props]);
 
   const handleModalClick = e => {
     toggleModal(false);
-    props.history.push("/login");
+    if (props.user.user.code === "10") {
+      props.history.push("/login");
+    }
   };
 
   return (
@@ -49,7 +44,6 @@ const Signup = props => {
         </Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form-fields">
-            <Row className="each-row"></Row>
             <Row className="each-row">
               <Col>
                 <Controller
@@ -57,29 +51,33 @@ const Signup = props => {
                   label={"First Name"}
                   name="firstName"
                   control={control}
-                  ref={register({ required: true })}
+                  rules={{ required: true }}
                   id={"outlined-full-width"}
                   width={290}
                 />
-                {errors.firstName && (
-                  <span role="alert">This field is required</span>
-                )}
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="firstName"
+                message="FirstName is required"
+              />
             </Row>
             <Row className="each-row">
               <Col>
                 <Controller
                   as={InputField}
                   name="lastName"
-                  ref={register({ required: true })}
+                  rules={{ required: true }}
                   label={"Last Name"}
                   control={control}
                   width={290}
                 />
-                {errors.lastName && (
-                  <span role="alert">This field is required</span>
-                )}
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="lastName"
+                message="LastName is required"
+              />
             </Row>
             <Row className="each-row">
               <Col>
@@ -94,11 +92,16 @@ const Signup = props => {
                       message: "invalid email address"
                     }
                   })}
+                  rules={{ required: true }}
                   control={control}
                   width={290}
                 />
-                {errors.email && errors.email.message}
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="email"
+                message="Email is required"
+              />
             </Row>
             <Row className="each-row">
               <Col>
@@ -107,14 +110,16 @@ const Signup = props => {
                   name="password"
                   label={"Password"}
                   type={"password"}
-                  ref={register({ required: true })}
+                  rules={{ required: true }}
                   control={control}
                   width={290}
                 />
-                {errors.password && (
-                  <span role="alert">This field is required</span>
-                )}
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="password"
+                message="Password is required"
+              />
             </Row>
             <Row className="each-row">
               <Col className="sub-button">
@@ -137,11 +142,18 @@ const Signup = props => {
           </div>
         </form>
       </div>
-      <Modal isOpen={isModalOpen} dialogMessage={"Successfully Registered"}>
+      <Modal isOpen={isModalOpen} dialogMessage={dialogMessage}>
         <SubmitButton label="ok" onClick={handleModalClick}></SubmitButton>
       </Modal>
     </div>
   );
 };
 
-export default Signup;
+const mapStateToProps = state => {
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(Signup);
