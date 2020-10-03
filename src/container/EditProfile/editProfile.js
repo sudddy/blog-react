@@ -4,71 +4,63 @@ import { Col, Row, Image } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { Header, InputField, Modal, SubmitButton } from "../../component/index";
 import "./editProfile.scss";
+import { connect } from "react-redux";
+import { editProfile, getUser } from "../../store/user";
 
 const EditProfile = props => {
   const [isModalOpen, toggleModal] = useState(false);
-  const [dialogMessage, setdialogMessage] = useState("");
-  const [currentUser, setCurrentUser] = useState({});
-  var storedImg;
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [field, setField] = useState(false);
+  const [update, setUpdate] = useState(false);
+
   const { handleSubmit, control, setValue, register } = useForm({
     defaultValues: {}
   });
 
   useEffect(() => {
-    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    setCurrentUser(loggedInUser[0]);
-
-    setValue("firstName", loggedInUser[0].firstName);
-    setValue("lastName", loggedInUser[0].lastName);
-    console.log(loggedInUser[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (props.user.hasOwnProperty("logged_user")) {
+      props.getUser(props.user.logged_user.user._id);
+      setField(true);
+    }
   }, []);
 
-  async function onSubmit(formValues) {
-    console.log(formValues);
-    var fileReader = new FileReader();
-
-    if (formValues.img.length) {
-      const handleFileRead = fileReader => {
-        const content = fileReader.target.result;
-        localStorage.setItem("img", content);
-      };
-
-      fileReader.onloadend = handleFileRead;
-      fileReader.readAsDataURL(formValues.img[0]);
+  useEffect(() => {
+    if (props.user.hasOwnProperty("logged_user") && field) {
+      setValue("firstName", props.user.logged_user.user.firstName);
+      setValue("lastName", props.user.logged_user.user.lastName);
+      setField(false);
     }
+  }, [props]);
 
-    let loginDetails = JSON.parse(localStorage.getItem("user_details"));
-    let currentUserDetails;
-
-    if (loginDetails !== null && loginDetails !== undefined) {
-      currentUserDetails = loginDetails.map(user => {
-        if (user.userId === currentUser.userId) {
-          user.firstName = formValues.firstName;
-          user.lastName = formValues.lastName;
-          return user;
+  useEffect(() => {
+    if (update) {
+      if (props.user.hasOwnProperty("user")) {
+        if (props.user.user.n === 1) {
+          toggleModal(true);
+          setDialogMessage("updated Successfully");
+          setUpdate(false);
         }
-        return user;
-      });
+      }
     }
-    console.log("currrent user detials,", currentUserDetails);
-    localStorage.setItem("user_details", JSON.stringify(currentUserDetails));
-    setdialogMessage("Profile Edited Successfully");
-    toggleModal(true);
-  }
+  }, [update]);
 
   const handleModalClick = e => {
     toggleModal(false);
     props.history.push("/dashboard");
   };
 
-  const displayPicture = () => {
-    storedImg = localStorage.getItem("img");
-    if (!storedImg) {
-      return <h5> Please upload image to view</h5>;
-    }
-    return <Image src={storedImg} width="300px" height="300px" />;
-  };
+  async function onSubmit(formValues) {
+    formValues._id = props.user.logged_user.user._id;
+    await props.editProfile(formValues);
+    setUpdate(true);
+  }
+  // const displayPicture = () => {
+  //   storedImg = localStorage.getItem("img");
+  //   if (!storedImg) {
+  //     return <h5> Please upload image to view</h5>;
+  //   }
+  //   return <Image src={storedImg} width="300px" height="300px" />;
+  // };
 
   return (
     <div className="whole-edit">
@@ -81,7 +73,7 @@ const EditProfile = props => {
             Edit Profile
           </Typography>
 
-          <Row>{displayPicture()}</Row>
+          {/* <Row>{displayPicture()}</Row> */}
 
           <div className="form-fields">
             <Row className="each-row">
@@ -138,5 +130,11 @@ const EditProfile = props => {
     </div>
   );
 };
+const mapStateToProps = state => {
+  return state;
+};
 
-export default EditProfile;
+export default connect(
+  mapStateToProps,
+  { editProfile, getUser }
+)(EditProfile);
