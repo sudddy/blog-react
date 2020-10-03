@@ -3,7 +3,9 @@ import {
   FETCH_BLOG_BY_ID,
   ADD_BLOG,
   UPDATE_BLOG,
-  FETCH_BLOG_BY_USERID
+  FETCH_BLOG_BY_USERID,
+  ADD_COMMENT,
+  EDIT_COMMENT
 } from "./action-types";
 
 const initialState = {};
@@ -20,7 +22,10 @@ export const blogReducer = (state = initialState, action) => {
       return { ...state, updateResult: action.payload };
     case FETCH_BLOG_BY_USERID:
       return { ...state, blog_list: action.payload };
-
+    case ADD_COMMENT:
+      return { ...state, updateResult: action.payload };
+    case EDIT_COMMENT:
+      return { ...state, updateResult: action.payload };
     default:
       return state;
   }

@@ -38,7 +38,7 @@ const Signup = props => {
   return (
     <div className="whole-signup">
       <div className="container signup-container">
-        <Typography className="heading" variant="h3">
+        <Typography className="heading" variant="h4">
           {" "}
           Sign up
         </Typography>
@@ -123,7 +123,7 @@ const Signup = props => {
             </Row>
             <Row className="each-row">
               <Col className="sub-button">
-                <Button
+                <SubmitButton
                   className={props.className}
                   color="primary"
                   variant="contained"
@@ -133,7 +133,7 @@ const Signup = props => {
                   label="Register"
                 >
                   Submit
-                </Button>
+                </SubmitButton>
               </Col>
             </Row>
           </div>

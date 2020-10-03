@@ -30,7 +30,7 @@ const InputMultiLine = props => {
       onChange={props.onChange}
       error={props.hasError}
       InputLabelProps={{
-        shrink: false
+        shrink: true
       }}
       labelWidth={50}
       helperText={props.errorMessage}

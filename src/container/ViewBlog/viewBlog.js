@@ -6,65 +6,82 @@ import { Controller, useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { SubmitButton } from "../../component";
 import { Header, InputMultiLine, CommentCard } from "../../component/index";
-import { fetchBlogById, updateBlog } from "../../store/blog";
+import {
+  fetchBlogById,
+  updateBlog,
+  addComment,
+  editComment
+} from "../../store/blog";
 import { useStyles } from "./viewBlogStyle";
 
 const ViewBlog = props => {
   const classes = useStyles();
-  const { handleSubmit, control, register } = useForm();
-  const [comments, setComments] = useState([]);
-  const [clickId, setClickId] = useState(false);
+  const { handleSubmit, control, register } = useForm({
+    defaultValues: ""
+  });
+  const [blogId, setBlogId] = useState("");
+  const [fetchBlog, setFetchBlog] = useState(false);
+
+  const handleClick = index => {
+    console.log("commentIndex", index);
+  };
 
   useEffect(() => {
     let viewBlogId = localStorage.getItem("ViewBlogId");
+    setBlogId(viewBlogId);
     props.fetchBlogById(viewBlogId);
-    setComments([
-      {
-        userId: "rags",
-        userName: "Raghavan Chandrasekar",
-        comment: "Heyy, Nice article about world war",
-        commentId: 1,
-        image: "",
-        likes: 3,
-        userIdLiked: []
-      },
-      {
-        userId: "rags",
-        userName: "Chandrasekar Narasimhan",
-        comment: "Good one",
-        commentId: 2,
-        image: "",
-        likes: ""
-      }
-    ]);
-  }, []);
+    setFetchBlog(false);
+  }, [fetchBlog]);
 
   const updateComment = () => {};
 
-  const saveComments = comment => {};
+  async function onSubmit(formValues) {
+    console.log(formValues);
+    var data;
+    if (props.user.hasOwnProperty("logged_user")) {
+      data = {
+        _id: blogId,
+        comments: {
+          userId: props.user.logged_user.user._id,
+          userName:
+            props.user.logged_user.user.firstName +
+            " " +
+            props.user.logged_user.user.lastName,
+          comment: formValues.comment
+        }
+      };
+      await props.addComment(data);
+      setFetchBlog(true);
+    } else {
+      alert("Login Please!");
+    }
+  }
 
-  const onSubmit = formValues => {};
-
-  const displayComments = comments => {
-    if (comments.length === 0) {
-      return (
-        <div>
-          <h1 className={classes.title}>
-            {" "}
-            Wow, such Empty! Please share your comments
-          </h1>
-          ;
-        </div>
-      );
+  const displayComments = () => {
+    if (props.blogDetails.hasOwnProperty("blogDetail")) {
+      if (!props.blogDetails.blogDetail.hasOwnProperty("comments")) {
+        return (
+          <div>
+            <h1 className={classes.title}>
+              {" "}
+              Wow, such Empty! Please share your comments
+            </h1>
+            ;
+          </div>
+        );
+      }
     }
 
     return (
       <div className={classes.comments}>
-        {comments.map(comment => (
+        {props.blogDetails.blogDetail.comments.map(comment => (
           <CommentCard
-            commentId={comment.commentId}
+            commentId={comment._id}
             userName={comment.userName}
             comment={comment.comment}
+            userLiked={comment.userIdLiked}
+            likes={comment.userIdLiked ? comment.userIdLiked.length : 0}
+            onClick={() => handleClick(comment._id)}
           />
         ))}
       </div>
@@ -102,7 +119,6 @@ const ViewBlog = props => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
               as={InputMultiLine}
-              // label={"Leave your comment"}
               name="comment"
               control={control}
               fullWidth
@@ -121,7 +137,7 @@ const ViewBlog = props => {
           </form>
         </Col>
       </Row>
-      <Row>{displayComments(comments)}</Row>
+      <Row>{displayComments()}</Row>
     </div>
   );
 };
@@ -132,5 +148,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { updateBlog, fetchBlogById }
+  { updateBlog, fetchBlogById, addComment, editComment }
 )(ViewBlog);

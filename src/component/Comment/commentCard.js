@@ -5,7 +5,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useStyles } from "./commentCardStyle";
 
@@ -13,13 +13,26 @@ const CommentCard = props => {
   const classes = useStyles();
   const [click, setClick] = useState(false);
 
-  const handleClick = e => {
+  useEffect(() => {
+    if (props.userLiked) {
+      let userId = JSON.parse(localStorage.getItem("user_details"));
+      props.userLiked.map(likes => {
+        if (likes === userId._id) {
+          setClick(true);
+        }
+      });
+    }
+  }, []);
+
+  const handleClick = props => {
     if (click) {
       setClick(false);
     } else {
       setClick(true);
     }
-    console.log(e);
+    if (props.onClick) {
+      props.onClick();
+    }
   };
 
   return (
@@ -55,7 +68,7 @@ const CommentCard = props => {
                 variant="body2"
                 color="textSecondary"
               >
-                6 Likes
+                {props.likes} Likes
               </Typography>
             </div>
           </CardContent>

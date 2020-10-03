@@ -55,7 +55,7 @@ const Login = props => {
   return (
     <div className="whole-login">
       <div className="container login-container">
-        <Typography className="heading" variant="h3">
+        <Typography className="heading" variant="h4">
           {" "}
           Login
         </Typography>
@@ -100,8 +100,12 @@ const Login = props => {
 
         <Row>
           <div className="signup">
-            <Typography className="s-text">New to the blog?</Typography>
-            <a onClick={handleSignup}>signup</a>
+            <Typography className="s-text">
+              New to the blog?{" "}
+              <a className="s-link" onClick={handleSignup}>
+                signup
+              </a>
+            </Typography>
           </div>
           <br />
           <br />

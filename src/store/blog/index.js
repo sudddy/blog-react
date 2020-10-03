@@ -4,5 +4,7 @@ export {
   addBlog,
   updateBlog,
   fetchBlogList,
-  fetchBlogByUserId
+  fetchBlogByUserId,
+  addComment,
+  editComment
 } from "./actions";

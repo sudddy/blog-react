@@ -4,7 +4,9 @@ import {
   FETCH_BLOG_BY_ID,
   ADD_BLOG,
   UPDATE_BLOG,
-  FETCH_BLOG_BY_USERID
+  FETCH_BLOG_BY_USERID,
+  ADD_COMMENT,
+  EDIT_COMMENT
 } from "./action-types";
 
 export const fetchBlogList = () => {
@@ -62,5 +64,27 @@ export const updateBlog = data => {
       data: data
     });
     dispatch({ type: UPDATE_BLOG, payload: responseData });
+  };
+};
+
+export const addComment = data => {
+  return async dispatch => {
+    const responseData = await request({
+      url: "/blog/addComment",
+      method: "POST",
+      data: data
+    });
+    dispatch({ type: ADD_COMMENT, payload: responseData });
+  };
+};
+
+export const editComment = data => {
+  return async dispatch => {
+    const responseData = await request({
+      url: "/blog/editComment",
+      method: "PUT",
+      data: data
+    });
+    dispatch({ type: EDIT_COMMENT, payload: responseData });
   };
 };

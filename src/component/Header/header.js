@@ -10,6 +10,9 @@ import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { headerStyles } from "./headerStyles";
+import { connect } from "react-redux";
+import { logoutUser } from "../../store/user";
+
 const Header = props => {
   const classes = headerStyles();
   const history = useHistory();
@@ -30,11 +33,8 @@ const Header = props => {
     history.push("/editProfile");
   };
   const handleLogOut = () => {
-    async function logout() {
-      localStorage.removeItem("loggedInUser");
-      history.push("/login");
-    }
-    logout();
+    props.logoutUser();
+    history.push("/login");
   };
 
   const handleHome = () => {
@@ -92,5 +92,11 @@ const Header = props => {
     </div>
   );
 };
+const mapStateToProps = state => {
+  return state;
+};
 
-export default Header;
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(Header);
