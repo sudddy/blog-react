@@ -8,9 +8,11 @@ import { connect } from "react-redux";
 
 const ViewAllDashboard = props => {
   const history = useHistory();
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
     props.fetchBlogList();
+    setUrl(window.location.host);
   }, []);
 
   const handleBlog = i => {
@@ -59,6 +61,7 @@ const ViewAllDashboard = props => {
                 name={blogDetail.blogName}
                 description={blogDetail.blogDescription}
                 key={blogDetail._id}
+                url={url + "/viewBlog/" + blogDetail._id}
                 onClickView={() => {
                   handleBlog(blogDetail._id);
                 }}
@@ -66,20 +69,24 @@ const ViewAllDashboard = props => {
             </Col>
           ))}
           <Row className="add-blogs">
-            <SubmitButton
-              label="Add Blog"
-              variant="outlined"
-              color="primary"
-              onClick={handleCreateBlog}
-            >
-              Add Blog
-            </SubmitButton>
-            <SubmitButton
-              label="View My Blogs"
-              variant="outlined"
-              color="primary"
-              onClick={handleViewMyDashboard}
-            ></SubmitButton>
+            <div className="create">
+              <SubmitButton
+                label="Add Blog"
+                variant="outlined"
+                color="primary"
+                onClick={handleCreateBlog}
+              >
+                Add Blog
+              </SubmitButton>
+            </div>
+            <div className="view">
+              <SubmitButton
+                label="View My Blogs"
+                variant="outlined"
+                color="primary"
+                onClick={handleViewMyDashboard}
+              ></SubmitButton>
+            </div>
           </Row>
         </Row>
       </div>

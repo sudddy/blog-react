@@ -22,15 +22,15 @@ const Signup = props => {
   }
 
   useEffect(() => {
-    if (Object.keys(props.user).length > 0) {
+    if (props.user.hasOwnProperty("signup")) {
       toggleModal(true);
-      setDialogMessage(props.user.user.message);
+      setDialogMessage(props.user.signup.message);
     }
   }, [props]);
 
   const handleModalClick = e => {
     toggleModal(false);
-    if (props.user.user.code === "10") {
+    if (props.user.signup.code === "10") {
       props.history.push("/login");
     }
   };

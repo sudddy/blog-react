@@ -15,7 +15,7 @@ export const userReducer = (state = initialState, action) => {
     case LOGOUT_USER:
       return { ...state, logged_user: action.payload };
     case SIGNUP_USER:
-      return { ...state, user: action.payload };
+      return { ...state, signup: action.payload };
     case EDIT_USER:
       return { ...state, user: action.payload };
     case GET_USER:

@@ -22,8 +22,8 @@ const ViewBlog = props => {
   const [blogId, setBlogId] = useState("");
   const [fetchBlog, setFetchBlog] = useState(false);
 
-  const handleClick = index => {
-    console.log("commentIndex", index);
+  const handleClick = () => {
+    setFetchBlog(true);
   };
 
   useEffect(() => {
@@ -32,8 +32,6 @@ const ViewBlog = props => {
     props.fetchBlogById(viewBlogId);
     setFetchBlog(false);
   }, [fetchBlog]);
-
-  const updateComment = () => {};
 
   async function onSubmit(formValues) {
     console.log(formValues);
@@ -47,7 +45,8 @@ const ViewBlog = props => {
             props.user.logged_user.user.firstName +
             " " +
             props.user.logged_user.user.lastName,
-          comment: formValues.comment
+          comment: formValues.comment,
+          userIdLiked: []
         }
       };
       await props.addComment(data);
@@ -80,6 +79,8 @@ const ViewBlog = props => {
             userName={comment.userName}
             comment={comment.comment}
             userLiked={comment.userIdLiked}
+            blogId={blogId}
+            userId={props.user.logged_user.user._id}
             likes={comment.userIdLiked ? comment.userIdLiked.length : 0}
             onClick={() => handleClick(comment._id)}
           />
@@ -121,6 +122,7 @@ const ViewBlog = props => {
               as={InputMultiLine}
               name="comment"
               control={control}
+              class={"bgWhite"}
               fullWidth
               row={4}
               ref={register}

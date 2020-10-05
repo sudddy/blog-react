@@ -54,10 +54,8 @@ const Header = props => {
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.toolbarStyle}>
-          <Typography className={classes.welcomeFont}>
-            Welcome, {username}
-          </Typography>
-          &nbsp; &nbsp; <HomeRoundedIcon onClick={handleHome} />
+          <HomeRoundedIcon onClick={handleHome}></HomeRoundedIcon>
+
           <div className={classes.toolbarMenu}>
             <IconButton
               aria-label="account of current user"
@@ -66,6 +64,9 @@ const Header = props => {
               onClick={handleMenu}
               color="inherit"
             >
+              <Typography className={classes.welcomeFont}>
+                {username}
+              </Typography>
               <ArrowDropDownCircleRoundedIcon />
             </IconButton>
 

@@ -16,7 +16,7 @@ const InputMultiLine = props => {
       id={props.id}
       name={props.name}
       type={props.type}
-      className={classes.input}
+      className={props.class === "bgWhite" ? classes.input : null}
       value={props.value}
       label={props.label}
       placeholder={props.label}

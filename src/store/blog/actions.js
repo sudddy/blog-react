@@ -20,8 +20,6 @@ export const fetchBlogList = () => {
 };
 
 export const fetchBlogById = data => {
-  console.log("The data");
-  console.log(data);
   return async dispatch => {
     const responseData = await request({
       url: `/blog/listbyId/${data}`,
@@ -33,8 +31,6 @@ export const fetchBlogById = data => {
 };
 
 export const fetchBlogByUserId = data => {
-  console.log("The data");
-  console.log(data);
   return async dispatch => {
     const responseData = await request({
       url: `/blog/listBlogsByUserId/${data}`,

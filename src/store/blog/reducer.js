@@ -25,7 +25,7 @@ export const blogReducer = (state = initialState, action) => {
     case ADD_COMMENT:
       return { ...state, updateResult: action.payload };
     case EDIT_COMMENT:
-      return { ...state, updateResult: action.payload };
+      return { ...state, comments: action.payload };
     default:
       return state;
   }

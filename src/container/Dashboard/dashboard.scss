@@ -9,6 +9,8 @@
 }
 
 .add-blogs {
+  display: flex;
+  justify-content: center;
   padding: 10px 40px;
 }
 
@@ -19,4 +21,9 @@
   .column {
     padding: 10px 20px;
   }
+}
+
+.view {
+  padding-left: 20px;
+  display: inline-block;
 }

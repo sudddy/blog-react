@@ -30,28 +30,25 @@ const Cards = props => {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-        <CardContent>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="h2"
-            className={classes.textColor}
-          >
-            <b>{props.name}</b>
-          </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            className={classes.textColor}
-            component="p"
-          >
-            {props.description
-              ? props.description
-              : "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <CardContent className={classes.content}>
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="h6"
+          className={classes.title}
+        >
+          <b>{props.name}</b>
+        </Typography>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          className={classes.description}
+          component="p"
+        >
+          {props.description}
+        </Typography>
+      </CardContent>
+
       <CardActions className={classes.actions}>
         <FacebookShareButton
           url={props.url}

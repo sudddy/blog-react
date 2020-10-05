@@ -3,16 +3,19 @@ export const useStyles = makeStyles(theme => ({
   root: {
     width: "280px",
     height: "auto",
-    backgroundColor: "#e2e1e1",
+    backgroundColor: "#e0ece4",
     [theme.breakpoints.up("sm")]: {
       width: "auto"
     }
   },
+  content: {
+    height: "80px"
+  },
   title: {
-    fontSize: 14,
-    paddingLeft: "20px",
-    paddingTop: "20px",
-    color: "#000"
+    color: "#0d7377"
+  },
+  description: {
+    color: "#212121"
   },
   pos: {
     marginBottom: 12
@@ -23,8 +26,5 @@ export const useStyles = makeStyles(theme => ({
   actions: {
     display: "flex",
     justifyContent: "center"
-  },
-  textColor: {
-    color: "#000"
   }
 }));

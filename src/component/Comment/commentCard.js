@@ -8,10 +8,13 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import React, { useState, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useStyles } from "./commentCardStyle";
+import { editComment } from "../../store/blog";
+import { connect } from "react-redux";
 
 const CommentCard = props => {
   const classes = useStyles();
   const [click, setClick] = useState(false);
+  const [pull, setPull] = useState(false);
 
   useEffect(() => {
     if (props.userLiked) {
@@ -24,15 +27,26 @@ const CommentCard = props => {
     }
   }, []);
 
-  const handleClick = props => {
+  const handleClick = () => {
     if (click) {
       setClick(false);
+      setPull(false);
     } else {
       setClick(true);
+      setPull(true);
     }
-    if (props.onClick) {
-      props.onClick();
-    }
+
+    var updateLikes = {
+      _id: props.blogId,
+      push: pull ? false : true,
+      comments: {
+        _id: props.commentId,
+        userIdLiked: props.user.logged_user.user._id
+      }
+    };
+    props.editComment(updateLikes);
+    props.onClick();
+    console.log("clicked");
   };
 
   return (
@@ -78,4 +92,11 @@ const CommentCard = props => {
   );
 };
 
-export default CommentCard;
+const mapStateToProps = state => {
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { editComment }
+)(CommentCard);
