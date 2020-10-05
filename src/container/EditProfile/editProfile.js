@@ -6,6 +6,7 @@ import { Header, InputField, Modal, SubmitButton } from "../../component/index";
 import "./editProfile.scss";
 import { connect } from "react-redux";
 import { editProfile, getUser } from "../../store/user";
+import { ErrorMessage } from "@hookform/error-message";
 
 const EditProfile = props => {
   const [isModalOpen, toggleModal] = useState(false);
@@ -13,7 +14,7 @@ const EditProfile = props => {
   const [field, setField] = useState(false);
   const [update, setUpdate] = useState(false);
 
-  const { handleSubmit, control, setValue, register } = useForm({
+  const { handleSubmit, control, setValue, register, errors } = useForm({
     defaultValues: {}
   });
 
@@ -83,10 +84,16 @@ const EditProfile = props => {
                   name="firstName"
                   label={"First Name"}
                   ref={register}
+                  rules={{ required: true }}
                   control={control}
                   width="290px"
                 />
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="firstName"
+                message="FirstName is required"
+              />
             </Row>
             <Row className="each-row">
               <Col>
@@ -95,13 +102,19 @@ const EditProfile = props => {
                   name="lastName"
                   ref={register}
                   label={"Last Name"}
+                  rules={{ required: true }}
                   control={control}
                   width="290px"
                 />
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="lastName"
+                message="LastName is required"
+              />
             </Row>
             <br />
-            <Row className="each-row">
+            {/* <Row className="each-row">
               <Col>
                 <input
                   type="file"
@@ -110,7 +123,7 @@ const EditProfile = props => {
                   control={control}
                 />
               </Col>
-            </Row>
+            </Row> */}
 
             <Row className="each-row">
               <Col className="sub-button">
