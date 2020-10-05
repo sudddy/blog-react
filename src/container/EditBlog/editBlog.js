@@ -13,6 +13,7 @@ import {
 import "./editBlog.scss";
 import { connect } from "react-redux";
 import { updateBlog, fetchBlogById } from "../../store/blog";
+import { ErrorMessage } from "@hookform/error-message";
 
 const EditBlog = props => {
   const [isModalOpen, toggleModal] = useState(false);
@@ -20,7 +21,7 @@ const EditBlog = props => {
   const [field, setField] = useState(false);
   const [update, setUpdate] = useState(false);
 
-  const { handleSubmit, control, register, setValue } = useForm({
+  const { handleSubmit, control, register, setValue, errors } = useForm({
     defaultValues: ""
   });
 
@@ -79,19 +80,31 @@ const EditBlog = props => {
                   label={"Blog Name"}
                   name="blogName"
                   control={control}
+                  rules={{ required: true }}
                   id={"outlined-full-width"}
                 />
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="blogName"
+                message="Blog Name is required"
+              />
             </Row>
             <Row className="each-row">
               <Col>
                 <Controller
                   as={InputField}
                   name="blogDescription"
+                  rules={{ required: true }}
                   label={"Blog Descrition"}
                   control={control}
                 />
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="blogDescription"
+                message="Blog Description is required"
+              />
             </Row>
 
             <Row className="each-row">
@@ -101,12 +114,18 @@ const EditBlog = props => {
                   label={"Blog Content"}
                   name="blogContent"
                   control={control}
+                  rules={{ required: true }}
                   fullWidth
                   ref={register}
                   aria-label="maximum height"
                   placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />
               </Col>
+              <ErrorMessage
+                errors={errors}
+                name="blogContent"
+                message="Blog Content is required"
+              />
             </Row>
             <Row className="each-row">
               <Col className="button">
