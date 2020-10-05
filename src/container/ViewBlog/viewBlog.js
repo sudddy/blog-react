@@ -80,6 +80,7 @@ const ViewBlog = props => {
             comment={comment.comment}
             userLiked={comment.userIdLiked}
             blogId={blogId}
+            username={comment.userName.substring(0, 1)}
             userId={props.user.logged_user.user._id}
             likes={comment.userIdLiked ? comment.userIdLiked.length : 0}
             onClick={() => handleClick(comment._id)}

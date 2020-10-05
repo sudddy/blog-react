@@ -57,7 +57,7 @@ const CommentCard = props => {
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe" className={classes.avatar}>
-                  R
+                  {props.username}
                 </Avatar>
               }
               title={props.userName}
